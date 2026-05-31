@@ -9,15 +9,22 @@
 <body>
 
   <nav class="navbar">
-    <h1>DevBlog</h1>
+  <h1>DevBlog</h1>
 
-    <% if (locals.user) { %>
+  <% if (locals.user) { %>
+    <div class="nav-links">
+      <a href="/" class="nav-btn">Home</a>
+      <a href="/posts/new" class="nav-btn">Create Post</a>
       <a href="/logout" class="nav-btn">Logout</a>
-    <% } else { %>
+    </div>
+  <% } else { %>
+    <div class="nav-links">
+      <a href="/" class="nav-btn">Home</a>
       <a href="/login" class="nav-btn">Login</a>
-    <% } %>
-  </nav>
-
+      <a href="/register" class="nav-btn">Register</a>
+    </div>
+  <% } %>
+</nav>
   <main class="post-detail">
 
     <h2><%= post.title %></h2>
