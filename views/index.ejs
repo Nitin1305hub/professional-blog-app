@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DevBlog</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+  <h1>DevBlog</h1>
+
+  <% if (locals.user) { %>
+
+    <div class="nav-links">
+
+      <span class="welcome-text">
+        Welcome, <%= user.username %>
+      </span>
+
+      <a href="/posts/new" class="nav-btn">
+        Create Post
+      </a>
+
+      <a href="/logout" class="nav-btn">
+        Logout
+      </a>
+
+    </div>
+
+  <% } else { %>
+
+    <a href="/login" class="nav-btn">
+      Login
+    </a>
+
+  <% } %>
+</nav>
+
+  <section class="hero">
+
+    <h2>Welcome to DevBlog</h2>
+
+    <p>
+      A professional blog platform built with
+      Node.js, Express, EJS and MongoDB.
+    </p>
+
+  </section>
+
+  <main class="container">
+
+    <% if (posts.length === 0) { %>
+  <div class="empty">
+    <h3>No Blog Posts Yet</h3>
+    <p>Create your first professional blog post.</p>
+  </div>
+<% } else { %>
+  <div class="posts-grid">
+    <% posts.forEach(post => { %>
+      <div class="post-card">
+  <h3><%= post.title %></h3>
+
+  <p><strong>By:</strong> <%= post.author %></p>
+
+  <p><strong>Category:</strong> <%= post.category %></p>
+
+  <p><%= post.content.substring(0, 120) %>...</p>
+
+  <a href="/posts/<%= post._id %>" class="read-more">Read More</a>
+</div>
+    <% }) %>
+  </div>
+<% } %>
+
+  </main>
+
+</body>
+</html>

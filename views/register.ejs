@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <h1>DevBlog</h1>
+
+  <% if (locals.user) { %>
+    <a href="/logout" class="nav-btn">Logout</a>
+  <% } else { %>
+    <a href="/login" class="nav-btn">Login</a>
+  <% } %>
+</nav>
+
+<main class="form-container">
+  <h2>Create Account</h2>
+
+  <form action="/register" method="POST" class="blog-form">
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Enter username" required />
+
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Enter email" required />
+
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Enter password" required />
+
+    <button type="submit">Register</button>
+  </form>
+</main>
+
+</body>
+</html>

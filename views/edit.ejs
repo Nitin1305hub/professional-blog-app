@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Post</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <h1>DevBlog</h1>
+
+  <% if (locals.user) { %>
+    <a href="/logout" class="nav-btn">Logout</a>
+  <% } else { %>
+    <a href="/login" class="nav-btn">Login</a>
+  <% } %>
+</nav>
+
+<main class="form-container">
+
+  <h2>Edit Blog Post</h2>
+
+  <form
+    action="/posts/<%= post._id %>?_method=PUT"
+    method="POST"
+    class="blog-form"
+  >
+
+    <label>Title</label>
+    <input
+      type="text"
+      name="title"
+      value="<%= post.title %>"
+      required
+    />
+
+    <label>Author</label>
+    <input
+      type="text"
+      name="author"
+      value="<%= post.author %>"
+      required
+    />
+
+    <label>Category</label>
+    <input
+      type="text"
+      name="category"
+      value="<%= post.category %>"
+      required
+    />
+
+    <label>Content</label>
+
+    <textarea
+      name="content"
+      rows="10"
+      required
+    ><%= post.content %></textarea>
+
+    <button type="submit">
+      Update Post
+    </button>
+
+  </form>
+
+</main>
+
+</body>
+</html>

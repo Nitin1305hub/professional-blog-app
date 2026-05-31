@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= post.title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <h1>DevBlog</h1>
+
+    <% if (locals.user) { %>
+      <a href="/logout" class="nav-btn">Logout</a>
+    <% } else { %>
+      <a href="/login" class="nav-btn">Login</a>
+    <% } %>
+  </nav>
+
+  <main class="post-detail">
+
+    <h2><%= post.title %></h2>
+
+    <p><strong>Author:</strong> <%= post.author %></p>
+    <p><strong>Category:</strong> <%= post.category %></p>
+    <p><strong>Date:</strong> <%= post.createdAt.toDateString() %></p>
+
+    <hr>
+
+    <p class="full-content">
+      <%= post.content %>
+    </p>
+
+    <!-- Show Edit/Delete only to owner -->
+    <% if (user && post.user && post.user.toString() === user.id) { %>
+
+      <div class="actions">
+
+        <a href="/posts/edit/<%= post._id %>" class="edit-btn">
+          Edit Post
+        </a>
+
+        <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+          <button type="submit" class="delete-btn">
+            Delete Post
+          </button>
+        </form>
+
+      </div>
+
+    <% } %>
+
+  </main>
+
+</body>
+</html>
