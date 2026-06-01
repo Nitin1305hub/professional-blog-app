@@ -12,11 +12,13 @@
 
 <body>
 
-  <nav class="navbar">
+<nav class="navbar">
   <h1>DevBlog</h1>
 
   <% if (locals.user) { %>
     <div class="nav-links">
+      <a href="/" class="nav-btn">Home</a>
+      <a href="/profile/<%= locals.user.id %>" class="nav-btn">Profile</a>
       <a href="/posts/new" class="nav-btn">Create Post</a>
       <a href="/logout" class="nav-btn">Logout</a>
     </div>
@@ -28,43 +30,118 @@
   <% } %>
 </nav>
 
-  <section class="hero">
+<section class="hero">
+  <h2>Welcome to DevBlog</h2>
 
-    <h2>Welcome to DevBlog</h2>
+  <p>
+    A professional blog platform built with
+    Node.js, Express, EJS and MongoDB.
+  </p>
+</section>
 
-    <p>
-      A professional blog platform built with
-      Node.js, Express, EJS and MongoDB.
-    </p>
+<main class="container">
 
-  </section>
+  <form action="/" method="GET" class="search-form">
 
-  <main class="container">
+    <input
+      type="text"
+      name="search"
+      placeholder="Search by title, author, content..."
+      value="<%= typeof search !== 'undefined' ? search : '' %>"
+    >
 
-    <% if (posts.length === 0) { %>
-  <div class="empty">
-    <h3>No Blog Posts Yet</h3>
-    <p>Create your first professional blog post.</p>
-  </div>
-<% } else { %>
-  <div class="posts-grid">
-    <% posts.forEach(post => { %>
-      <div class="post-card">
-  <h3><%= post.title %></h3>
+    <select name="category">
+      <option value="All">All Categories</option>
 
-  <p><strong>By:</strong> <%= post.author %></p>
+      <option value="Technology" <%= category === "Technology" ? "selected" : "" %>>
+        Technology
+      </option>
 
-  <p><strong>Category:</strong> <%= post.category %></p>
+      <option value="Web Development" <%= category === "Web Development" ? "selected" : "" %>>
+        Web Development
+      </option>
 
-  <p><%= post.content.substring(0, 120) %>...</p>
+      <option value="Coding" <%= category === "Coding" ? "selected" : "" %>>
+        Coding
+      </option>
 
-  <a href="/posts/<%= post._id %>" class="read-more">Read More</a>
-</div>
-    <% }) %>
-  </div>
-<% } %>
+      <option value="AI" <%= category === "AI" ? "selected" : "" %>>
+        AI
+      </option>
 
-  </main>
+      <option value="Education" <%= category === "Education" ? "selected" : "" %>>
+        Education
+      </option>
+    </select>
+
+    <button type="submit">
+      Search
+    </button>
+
+    <a href="/" class="clear-btn">
+      Clear
+    </a>
+
+  </form>
+
+  <% if (posts.length === 0) { %>
+
+    <div class="empty">
+      <h3>No Blog Posts Found</h3>
+      <p>Try another search or category.</p>
+    </div>
+
+  <% } else { %>
+
+    <div class="posts-grid">
+
+      <% posts.forEach(post => { %>
+
+        <div class="post-card">
+
+          <% if (post.imageUrl) { %>
+            <img
+              src="<%= post.imageUrl %>"
+              alt="Post Image"
+              class="card-image"
+            >
+          <% } %>
+
+          <h3><%= post.title %></h3>
+
+         <p>
+  <strong>By:</strong>
+  <% if (post.user) { %>
+    <a href="/profile/<%= post.user %>" class="author-link">
+      <%= post.author %>
+    </a>
+  <% } else { %>
+    <%= post.author %>
+  <% } %>
+</p>
+
+          <p><strong>Category:</strong> <%= post.category %></p>
+
+          <p>
+            <%= post.content.substring(0, 120) %>...
+          </p>
+
+          <a
+            href="/posts/<%= post._id %>"
+            class="read-more"
+          >
+            Read More
+          </a>
+
+        </div>
+
+      <% }) %>
+
+    </div>
+
+  <% } %>
+
+</main>
 
 </body>
 </html>

@@ -12,12 +12,13 @@
 
 <body>
 
- <nav class="navbar">
+<nav class="navbar">
   <h1>DevBlog</h1>
 
   <% if (locals.user) { %>
     <div class="nav-links">
       <a href="/" class="nav-btn">Home</a>
+      <a href="/profile/<%= locals.user.id %>" class="nav-btn">Profile</a>
       <a href="/posts/new" class="nav-btn">Create Post</a>
       <a href="/logout" class="nav-btn">Logout</a>
     </div>
@@ -30,30 +31,63 @@
   <% } %>
 </nav>
 
-  <main class="form-container">
+<main class="form-container">
 
-    <h2>Create New Blog Post</h2>
+  <h2>Create New Blog Post</h2>
 
-   <form action="/posts" method="POST" class="blog-form">
+  <form
+    action="/posts"
+    method="POST"
+    enctype="multipart/form-data"
+    class="blog-form"
+  >
 
-      <label>Title</label>
-      <input type="text" name="title" placeholder="Enter blog title" required />
+    <label>Title</label>
+    <input
+      type="text"
+      name="title"
+      placeholder="Enter blog title"
+      required
+    />
 
-      <label>Author</label>
-      <input type="text" name="author" placeholder="Enter author name" required />
+    <label>Author</label>
+    <input
+      type="text"
+      name="author"
+      placeholder="Enter author name"
+      required
+    />
 
-      <label>Category</label>
-     <input type="text" name="category" placeholder="Technology, Coding, AI..." required />
-      <label>Content</label>
+    <label>Category</label>
+    <input
+      type="text"
+      name="category"
+      placeholder="Technology, Coding, AI..."
+      required
+    />
 
-     <textarea name="content" rows="10" placeholder="Write your blog content..." required></textarea>
-      <button type="submit">
-        Publish Post
-      </button>
+    <label>Content</label>
+    <textarea
+      name="content"
+      rows="10"
+      placeholder="Write your blog content..."
+      required
+    ></textarea>
 
-    </form>
+    <label>Post Image</label>
+    <input
+      type="file"
+      name="image"
+      accept="image/*"
+    />
 
-  </main>
+    <button type="submit">
+      Publish Post
+    </button>
+
+  </form>
+
+</main>
 
 </body>
 </html>

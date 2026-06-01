@@ -4,16 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= post.title %></title>
+
   <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
-  <nav class="navbar">
+<nav class="navbar">
   <h1>DevBlog</h1>
 
   <% if (locals.user) { %>
     <div class="nav-links">
       <a href="/" class="nav-btn">Home</a>
+      <a href="/profile/<%= locals.user.id %>" class="nav-btn">Profile</a>
       <a href="/posts/new" class="nav-btn">Create Post</a>
       <a href="/logout" class="nav-btn">Logout</a>
     </div>
@@ -25,40 +28,136 @@
     </div>
   <% } %>
 </nav>
-  <main class="post-detail">
 
-    <h2><%= post.title %></h2>
+<main class="post-detail">
 
-    <p><strong>Author:</strong> <%= post.author %></p>
-    <p><strong>Category:</strong> <%= post.category %></p>
-    <p><strong>Date:</strong> <%= post.createdAt.toDateString() %></p>
+  <h2><%= post.title %></h2>
 
-    <hr>
+  <p>
+    <strong>Author:</strong>
+    <% if (post.user) { %>
+      <a href="/profile/<%= post.user %>" class="author-link">
+        <%= post.author %>
+      </a>
+    <% } else { %>
+      <%= post.author %>
+    <% } %>
+  </p>
 
-    <p class="full-content">
-      <%= post.content %>
-    </p>
+  <p><strong>Category:</strong> <%= post.category %></p>
+  <p><strong>Date:</strong> <%= post.createdAt.toDateString() %></p>
 
-    <!-- Show Edit/Delete only to owner -->
-    <% if (user && post.user && post.user.toString() === user.id) { %>
+  <% if (post.imageUrl) { %>
+    <img
+      src="<%= post.imageUrl %>"
+      alt="Post Image"
+      class="post-image"
+    >
+  <% } %>
 
-      <div class="actions">
+  <hr>
 
-        <a href="/posts/edit/<%= post._id %>" class="edit-btn">
-          Edit Post
-        </a>
+  <p class="full-content">
+    <%= post.content %>
+  </p>
 
-        <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
-          <button type="submit" class="delete-btn">
-            Delete Post
-          </button>
-        </form>
+  <hr>
 
-      </div>
+  <section class="like-section">
+    <% if (locals.user) { %>
+      <form action="/posts/<%= post._id %>/like" method="POST">
+        <button type="submit" class="like-btn">
+          ❤️ Like (<%= post.likes ? post.likes.length : 0 %>)
+        </button>
+      </form>
+    <% } else { %>
+      <p>
+        ❤️ Likes: <%= post.likes ? post.likes.length : 0 %>
+      </p>
+    <% } %>
+  </section>
+
+  <hr>
+
+  <section class="comments-section">
+
+    <h3>Comments</h3>
+
+    <% if (locals.user) { %>
+
+      <form
+        action="/posts/<%= post._id %>/comments"
+        method="POST"
+        class="comment-form"
+      >
+        <textarea
+          name="comment"
+          placeholder="Write your comment..."
+          required
+        ></textarea>
+
+        <button type="submit">
+          Add Comment
+        </button>
+      </form>
+
+    <% } else { %>
+
+      <p>
+        <a href="/login">Login</a> to add a comment.
+      </p>
 
     <% } %>
 
-  </main>
+    <div class="comments-list">
+
+      <% if (post.comments && post.comments.length > 0) { %>
+
+        <% post.comments.forEach(comment => { %>
+
+          <div class="comment-box">
+            <strong><%= comment.username %></strong>
+
+            <p>
+              <%= comment.text %>
+            </p>
+
+            <small>
+              <%= comment.createdAt.toDateString() %>
+            </small>
+          </div>
+
+        <% }) %>
+
+      <% } else { %>
+
+        <p>No comments yet. Be the first to comment.</p>
+
+      <% } %>
+
+    </div>
+
+  </section>
+
+  <% if (locals.user && post.user && post.user.toString() === locals.user.id) { %>
+
+    <div class="actions">
+
+      <a href="/posts/edit/<%= post._id %>" class="edit-btn">
+        Edit Post
+      </a>
+
+      <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+        <button type="submit" class="delete-btn">
+          Delete Post
+        </button>
+      </form>
+
+    </div>
+
+  <% } %>
+
+</main>
 
 </body>
 </html>

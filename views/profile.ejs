@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title><%= profileUser.username %> Profile</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <h1>DevBlog</h1>
+
+  <% if (locals.user) { %>
+    <div class="nav-links">
+      <a href="/" class="nav-btn">Home</a>
+      <a href="/profile/<%= locals.user.id %>" class="nav-btn">Profile</a>
+      <a href="/posts/new" class="nav-btn">Create Post</a>
+      <a href="/logout" class="nav-btn">Logout</a>
+    </div>
+  <% } else { %>
+    <div class="nav-links">
+      <a href="/" class="nav-btn">Home</a>
+      <a href="/login" class="nav-btn">Login</a>
+      <a href="/register" class="nav-btn">Register</a>
+    </div>
+  <% } %>
+</nav>
+
+<main class="container">
+
+  <section class="profile-header">
+    <h2><%= profileUser.username %>'s Profile</h2>
+
+    <p>
+      <strong>Email:</strong> <%= profileUser.email %>
+    </p>
+
+    <p>
+      <strong>Total Posts:</strong> <%= posts.length %>
+    </p>
+  </section>
+
+  <h2 class="section-title">
+    Posts by <%= profileUser.username %>
+  </h2>
+
+  <% if (posts.length === 0) { %>
+
+    <div class="empty">
+      <h3>No posts yet</h3>
+      <p>This user has not created any posts.</p>
+    </div>
+
+  <% } else { %>
+
+    <div class="posts-grid">
+
+      <% posts.forEach(post => { %>
+
+        <div class="post-card">
+
+          <% if (post.imageUrl) { %>
+            <img
+              src="<%= post.imageUrl %>"
+              alt="Post Image"
+              class="card-image"
+            >
+          <% } %>
+
+          <h3><%= post.title %></h3>
+
+          <p>
+            <strong>Category:</strong> <%= post.category %>
+          </p>
+
+          <p>
+            <%= post.content.substring(0, 120) %>...
+          </p>
+
+          <a
+            href="/posts/<%= post._id %>"
+            class="read-more"
+          >
+            Read More
+          </a>
+
+        </div>
+
+      <% }) %>
+
+    </div>
+
+  <% } %>
+
+</main>
+
+</body>
+</html>
